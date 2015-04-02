@@ -94,12 +94,10 @@ int
 sys_date()
 {
   char *n;
-  struct rtcdate *r;
   if(argstr(0, &n) < 0){
-	  return -1;
+    return -1;
   }
-  r = (struct rtcdate *)n;
-  cmostime(r);
+  cmostime((struct rtcdate *)n);
   return 0;
 }
 
