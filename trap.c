@@ -13,6 +13,7 @@ struct gatedesc idt[256];
 extern uint vectors[];  // in vectors.S: array of 256 entry pointers
 struct spinlock tickslock;
 uint ticks;
+extern int mappages(pde_t*, void*, uint, uint, int);
 
 void
 tvinit(void)
@@ -77,7 +78,19 @@ trap(struct trapframe *tf)
             cpu->id, tf->cs, tf->eip);
     lapiceoi();
     break;
-   
+  case T_PGFLT:
+    // Lazy Allocation
+    ; // to make gcc happy
+    char * mem = kalloc();
+    uint addr = PGROUNDDOWN(rcr2());
+    if(mem == 0) {
+      cprintf("alloc out of memory\n");
+    } else {
+      memset(mem, 0, PGSIZE);
+      mappages(proc->pgdir, (char*)addr, PGSIZE, v2p(mem), PTE_W|PTE_U);
+      return;
+    }
+
   //PAGEBREAK: 13
   default:
     if(proc == 0 || (tf->cs&3) == 0){
