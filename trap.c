@@ -62,7 +62,7 @@ trap(struct trapframe *tf)
 			proc->curticks = 0;
 			// store eip so the process can ret from trap
 			proc->tf->esp = proc->tf->esp - 4;
-			*(char *)(proc->tf->esp) = proc->tf->eip;
+			*(uint *)(proc->tf->esp) = proc->tf->eip;
 			proc->tf->eip = (uint)(proc->alarmhandler);
 		}
 	}
