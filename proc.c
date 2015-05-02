@@ -70,6 +70,11 @@ found:
   memset(p->context, 0, sizeof *p->context);
   p->context->eip = (uint)forkret;
 
+  // Alarm counter initialization
+  p->alarmticks = 0;
+  p->curticks = 0;
+  p->alarmhandler = 0;
+
   return p;
 }
 

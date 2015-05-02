@@ -54,8 +54,19 @@ trap(struct trapframe *tf)
       ticks++;
       wakeup(&ticks);
       release(&tickslock);
-    }
-    lapiceoi();
+	}
+	lapiceoi();
+
+	if(proc && proc->alarmhandler && (tf->cs & 3) == DPL_USER) {
+		if(++proc->curticks == proc->alarmticks) {
+			proc->curticks = 0;
+			// store eip so the process can ret from trap
+			proc->tf->esp = proc->tf->esp - 4;
+			*(char *)(proc->tf->esp) = proc->tf->eip;
+			proc->tf->eip = (uint)(proc->alarmhandler);
+		}
+	}
+
     break;
   case T_IRQ0 + IRQ_IDE:
     ideintr();

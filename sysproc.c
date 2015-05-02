@@ -94,7 +94,7 @@ sys_uptime(void)
 }
 
 int
-sys_date()
+sys_date(void)
 {
   char *n;
   if(argstr(0, &n) < 0){
@@ -104,3 +104,16 @@ sys_date()
   return 0;
 }
 
+int sys_alarm(void)
+{
+	int ticks;
+	void (*handler)();
+
+	if(argint(0, &ticks) < 0)
+		return -1;
+	if(argptr(1, (char**)&handler, 1) < 0)
+		return -1;
+	proc->alarmticks = ticks;
+	proc->alarmhandler = handler;
+	return 0;
+}
