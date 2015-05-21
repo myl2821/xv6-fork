@@ -13,7 +13,7 @@
 
 #define static_assert(a, b) do { switch (0) case 0: case (a): ; } while (0)
 
-#define SIZE 1000
+#define SIZE 21113
 #define NINODES 200
 
 // Disk layout:
