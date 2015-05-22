@@ -104,7 +104,8 @@ sys_date(void)
   return 0;
 }
 
-int sys_alarm(void)
+int
+sys_alarm(void)
 {
 	int ticks;
 	void (*handler)();
@@ -115,5 +116,15 @@ int sys_alarm(void)
 		return -1;
 	proc->alarmticks = ticks;
 	proc->alarmhandler = handler;
+	return 0;
+}
+
+int
+sys_halt(void)
+{
+	cprintf("calling sys_halt\n");
+	const char *p = "Shutdown";
+	for(; *p; p++)
+		outb(0x8900, *p);
 	return 0;
 }

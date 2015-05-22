@@ -100,6 +100,7 @@ extern int sys_write(void);
 extern int sys_uptime(void);
 extern int sys_date(void);
 extern int sys_alarm(void);
+extern int sys_halt(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -125,6 +126,7 @@ static int (*syscalls[])(void) = {
 [SYS_close]   sys_close,
 [SYS_date]    sys_date,
 [SYS_alarm]   sys_alarm,
+[SYS_halt]    sys_halt,
 };
 
 const char* syscall_nmtbl[] = {
@@ -151,6 +153,7 @@ const char* syscall_nmtbl[] = {
 [SYS_link]    "link",
 [SYS_mkdir]   "mkdir",
 [SYS_close]   "close",
+[SYS_halt]    "halt",
 };
 
 void
